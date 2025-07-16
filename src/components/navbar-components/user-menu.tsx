@@ -1,5 +1,6 @@
-import { LogOutIcon } from "lucide-react";
+"use client";
 
+import { LogOutIcon } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,21 +12,30 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { NAVIGATION_LINKS } from "@/utils/constants";
+import { authClient, useSession } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
-export default async function UserMenu() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+export default function UserMenu() {
+  const { data: session } = useSession();
+  const router = useRouter();
+
+  const logout = async () => {
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: () => {
+          router.push("/sign-in");
+        },
+      },
+    });
+  };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-auto p-0 hover:bg-transparent">
+        <Button variant="ghost" className="h-auto p-0 hover:bg-transparent rounded-full border">
           <Avatar>
-            <AvatarImage src={(session?.user.image as string) + "?w=64"} alt="Profile image" />
+            <AvatarImage src={session?.user.image as string} alt="Profile image" />
             <AvatarFallback>{session?.user.name.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
@@ -48,7 +58,7 @@ export default async function UserMenu() {
           })}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => logout()}>
           <LogOutIcon size={16} className="opacity-60" aria-hidden="true" />
           <span>Logout</span>
         </DropdownMenuItem>

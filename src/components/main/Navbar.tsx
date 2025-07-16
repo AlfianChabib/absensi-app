@@ -1,3 +1,5 @@
+"use client";
+
 import { PlusIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -10,7 +12,7 @@ import Image from "next/image";
 
 export default function Navbar() {
   return (
-    <header className="border-b px-4 md:px-6">
+    <header className="border-b h-16 px-4 md:px-6 fixed top-0 bg-background w-full">
       <div className="flex h-16 items-center justify-between gap-4">
         {/* Left side */}
         <div className="flex flex-1 items-center gap-2">
@@ -30,6 +32,7 @@ export default function Navbar() {
           <Suspense fallback={<UserMenuFallback />}>
             <UserMenu />
           </Suspense>
+          {/* {isPending ? <UserMenuFallback /> : <UserMenu session={session as any} />} */}
         </div>
       </div>
     </header>

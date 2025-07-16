@@ -17,7 +17,7 @@ export default async function Home() {
   }
 
   return (
-    <div>
+    <div className="container">
       <h1>Welcome {session.user.name}</h1>
     </div>
   );

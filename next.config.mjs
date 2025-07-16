@@ -2,12 +2,12 @@
 
 // const withPWA = withPWAInit({
 //   dest: "public",
-//   aggressiveFrontEndNavCaching: true,
-//   cacheOnFrontEndNav: true,
+//   scope: "/",
 // });
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
+  reactStrictMode: true,
   images: {
     remotePatterns: [
       {
@@ -19,7 +19,14 @@ const nextConfig = {
       },
     ],
   },
-  allowedDevOrigins: ["http://192.168.1.28", "http://192.168.1.28"],
+  // allowedDevOrigins: [
+  //   "http://192.168.1.28",
+  //   "http://192.168.1.28",
+  //   "http://localhost",
+  //   "http://192.168.1.28",
+  //   "http://192.168.1.28",
+  // ],
+  allowedDevOrigins: ["192.168.1.28"],
 };
 
 export default nextConfig;

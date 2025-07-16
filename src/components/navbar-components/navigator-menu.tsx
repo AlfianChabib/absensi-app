@@ -5,6 +5,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { NAVIGATION_LINKS } from "@/utils/constants";
+import Link from "next/link";
 
 export default function NavigatorMenu() {
   return (
@@ -14,13 +15,11 @@ export default function NavigatorMenu() {
           const Icon = link.icon;
           return (
             <NavigationMenuItem key={index}>
-              <NavigationMenuLink
-                href={link.href}
-                className="flex size-8 items-center justify-center p-1.5"
-                title={link.label}
-              >
-                <Icon aria-hidden="true" />
-                <span className="sr-only">{link.label}</span>
+              <NavigationMenuLink asChild>
+                <Link href={link.href} className="flex size-8 items-center justify-center p-1.5" title={link.label}>
+                  <Icon aria-hidden="true" />
+                  <span className="sr-only">{link.label}</span>
+                </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           );

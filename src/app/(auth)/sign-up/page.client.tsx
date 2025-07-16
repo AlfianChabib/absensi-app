@@ -1,41 +1,44 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import Link from "next/link";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AuthValidation, Login } from "@/validation/auth.validation";
+import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
+import Link from "next/link";
+import { AuthValidation, Register } from "@/validation/auth.validation";
+import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
 export default function ClientPage({ className, ...props }: React.ComponentProps<"div">) {
   const [isPending, startTransition] = useTransition();
+
   const router = useRouter();
-  const form = useForm<Login>({
-    resolver: zodResolver(AuthValidation.login),
+  const form = useForm<Register>({
+    resolver: zodResolver(AuthValidation.register),
     defaultValues: {
       email: "",
       password: "",
+      username: "",
     },
   });
 
-  function onSubmit(values: Login) {
+  function onSubmit(values: Register) {
     startTransition(() => {
-      authClient.signIn.email(
+      authClient.signUp.email(
         {
           email: values.email,
           password: values.password,
+          name: values.username,
         },
         {
           onSuccess() {
-            router.push("/");
-            toast.success("Sign in successfully, welcome back.");
+            router.push("/sign-in");
+            toast.success("Sign up your email successfully, sign in now.");
           },
           onError(error) {
             toast.error(error.error.message);
@@ -45,14 +48,12 @@ export default function ClientPage({ className, ...props }: React.ComponentProps
     });
   }
 
-  console.log(isPending);
-
   return (
     <div className={cn("flex flex-col gap-6 max-w-lg w-full", className)} {...props}>
       <Card>
         <CardHeader className="text-center">
-          <CardTitle className="text-xl">Welcome Back</CardTitle>
-          <CardDescription>Sign-In with your Email and Password</CardDescription>
+          <CardTitle className="text-xl">Welcome</CardTitle>
+          <CardDescription>Register with your Email and Password</CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -67,6 +68,20 @@ export default function ClientPage({ className, ...props }: React.ComponentProps
                       <Input placeholder="example@example.com" {...field} />
                     </FormControl>
                     <FormDescription>This is your email address.</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Username</FormLabel>
+                    <FormControl>
+                      <Input placeholder="username" {...field} />
+                    </FormControl>
+                    <FormDescription>This is your public display name.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -92,9 +107,9 @@ export default function ClientPage({ className, ...props }: React.ComponentProps
           </Form>
         </CardContent>
         <div className="text-center text-sm">
-          Don&apos;t have an account?{" "}
-          <Link href="/sign-up" className="underline underline-offset-4">
-            Sign up
+          Have an account?{" "}
+          <Link href="/sign-in" className="underline underline-offset-4">
+            Sign in
           </Link>
         </div>
       </Card>
