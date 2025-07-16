@@ -45,8 +45,6 @@ export default function ClientPage({ className, ...props }: React.ComponentProps
     });
   }
 
-  console.log(isPending);
-
   return (
     <div className={cn("flex flex-col gap-6 max-w-lg w-full", className)} {...props}>
       <Card>

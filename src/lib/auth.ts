@@ -9,6 +9,7 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: false,
   },
+  trustedOrigins: ["https://192.168.1.84"],
   logger: {
     enabled: true,
     level: "debug",
@@ -30,5 +31,4 @@ export const auth = betterAuth({
   //   },
   // },
   plugins: [nextCookies()],
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });

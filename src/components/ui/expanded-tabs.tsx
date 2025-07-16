@@ -6,6 +6,7 @@ import { LucideIcon } from "lucide-react";
 import { useOnClickOutside } from "usehooks-ts";
 
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface Tab {
   title: string;
@@ -53,13 +54,15 @@ const transition = { delay: 0.1, type: "spring", bounce: 0, duration: 0.6 } as T
 export function ExpandedTabs({ tabs, className, activeColor = "text-primary", onChange }: ExpandedTabsProps) {
   const [selected, setSelected] = React.useState<number | null>(null);
   const outsideClickRef = React.useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
+  const router = useRouter();
 
   useOnClickOutside(outsideClickRef, () => {
     setSelected(null);
     onChange?.(null);
   });
 
-  const handleSelect = (index: number) => {
+  const handleSelect = (index: number, href?: string) => {
+    router.push(href ?? "");
     setSelected(index);
     onChange?.(index);
   };
@@ -67,22 +70,23 @@ export function ExpandedTabs({ tabs, className, activeColor = "text-primary", on
   const Separator = () => <div className=" h-[24px] w-[1.2px] bg-border" aria-hidden="true" />;
 
   return (
-    <div ref={outsideClickRef} className={cn(" flex gap-2 rounded-2xl border bg-background p-1 shadow-sm ", className)}>
+    <div
+      ref={outsideClickRef}
+      className={cn(" flex gap-2 items-center rounded-2xl border bg-background p-1 shadow-sm ", className)}
+    >
       {tabs.map((tab, index) => {
         if (tab.type === "separator") {
           return <Separator key={`separator-${index}`} />;
         }
-
         const Icon = tab.icon;
         return (
-          <motion.a
+          <motion.div
             key={tab.title}
             variants={buttonVariants}
-            href={tab.href ?? ""}
             initial={false}
             animate="animate"
             custom={selected === index}
-            onClick={() => handleSelect(index)}
+            onClick={() => handleSelect(index, tab.href)}
             transition={transition}
             className={cn(
               "relative flex items-center rounded-xl px-4 py-2 text-sm font-medium transition-colors duration-300",
@@ -100,12 +104,13 @@ export function ExpandedTabs({ tabs, className, activeColor = "text-primary", on
                   animate="animate"
                   exit="exit"
                   transition={transition}
+                  className="leading-4"
                 >
                   {tab.title}
                 </motion.span>
               )}
             </AnimatePresence>
-          </motion.a>
+          </motion.div>
         );
       })}
     </div>

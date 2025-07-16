@@ -8,6 +8,11 @@
 /** @type {import("next").NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  logging: {
+    fetches: {
+      fullUrl: true,
+    },
+  },
   images: {
     remotePatterns: [
       {
@@ -26,7 +31,8 @@ const nextConfig = {
   //   "http://192.168.1.28",
   //   "http://192.168.1.28",
   // ],
-  allowedDevOrigins: ["192.168.1.28"],
+  // allowedDevOrigins: ["192.168.1.28"],
+  allowedDevOrigins: ["local-origin.dev", "*.local-origin.dev"],
 };
 
 export default nextConfig;

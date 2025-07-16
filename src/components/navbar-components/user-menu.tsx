@@ -15,6 +15,7 @@ import {
 import { NAVIGATION_LINKS } from "@/utils/constants";
 import { authClient, useSession } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function UserMenu() {
   const { data: session } = useSession();
@@ -50,9 +51,11 @@ export default function UserMenu() {
           {NAVIGATION_LINKS.map((item, index) => {
             const Icon = item.icon;
             return (
-              <DropdownMenuItem key={index}>
-                <Icon size={16} className="opacity-60" aria-hidden="true" />
-                <span>{item.label}</span>
+              <DropdownMenuItem key={index} asChild>
+                <Link href={item.href}>
+                  <Icon size={16} className="opacity-60" aria-hidden="true" />
+                  <span>{item.label}</span>
+                </Link>
               </DropdownMenuItem>
             );
           })}
