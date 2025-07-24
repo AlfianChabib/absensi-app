@@ -3,10 +3,9 @@
 import * as React from "react";
 import { AnimatePresence, motion, Transition } from "framer-motion";
 import { LucideIcon } from "lucide-react";
-import { useOnClickOutside } from "usehooks-ts";
 
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSelectedLayoutSegment } from "next/navigation";
 
 interface Tab {
   title: string;
@@ -53,13 +52,8 @@ const transition = { delay: 0.1, type: "spring", bounce: 0, duration: 0.6 } as T
 
 export function ExpandedTabs({ tabs, className, activeColor = "text-primary", onChange }: ExpandedTabsProps) {
   const [selected, setSelected] = React.useState<number | null>(null);
-  const outsideClickRef = React.useRef<HTMLDivElement>(null as unknown as HTMLDivElement);
   const router = useRouter();
-
-  useOnClickOutside(outsideClickRef, () => {
-    setSelected(null);
-    onChange?.(null);
-  });
+  const segment = useSelectedLayoutSegment();
 
   const handleSelect = (index: number, href?: string) => {
     router.push(href ?? "");
@@ -67,13 +61,22 @@ export function ExpandedTabs({ tabs, className, activeColor = "text-primary", on
     onChange?.(index);
   };
 
+  React.useEffect(() => {
+    tabs.forEach((tab, index) => {
+      if (tab.type !== "separator") {
+        if (tab.href?.split("/")[1] === segment) {
+          console.log(index);
+          setSelected(index);
+          onChange?.(index);
+        }
+      }
+    });
+  }, [tabs, segment, onChange]);
+
   const Separator = () => <div className=" h-[24px] w-[1.2px] bg-border" aria-hidden="true" />;
 
   return (
-    <div
-      ref={outsideClickRef}
-      className={cn(" flex gap-2 items-center rounded-2xl border bg-background p-1 shadow-sm ", className)}
-    >
+    <div className={cn(" flex gap-2 items-center rounded-2xl border bg-background p-1 shadow-sm ", className)}>
       {tabs.map((tab, index) => {
         if (tab.type === "separator") {
           return <Separator key={`separator-${index}`} />;

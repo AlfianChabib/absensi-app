@@ -24,11 +24,5 @@ export const auth = betterAuth({
     updateAge: 60 * 60 * 24, // 1 day (every 1 day the session expiration is updated)
     freshAge: 60 * 5,
   },
-  // socialProviders: {
-  //   google: {
-  //     clientId: process.env.GOOGLE_CLIENT_ID as string,
-  //     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-  //   },
-  // },
   plugins: [nextCookies()],
 });
