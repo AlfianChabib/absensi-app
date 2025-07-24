@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import TanstackProvider from "@/components/provider/tanstack-provicer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,8 +47,10 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning={true}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Toaster position="top-center" richColors={true} />
-        {children}
+        <TanstackProvider>
+          <Toaster position="top-center" richColors={true} />
+          {children}
+        </TanstackProvider>
       </body>
     </html>
   );

@@ -65,7 +65,6 @@ export function ExpandedTabs({ tabs, className, activeColor = "text-primary", on
     tabs.forEach((tab, index) => {
       if (tab.type !== "separator") {
         if (tab.href?.split("/")[1] === segment) {
-          console.log(index);
           setSelected(index);
           onChange?.(index);
         }
