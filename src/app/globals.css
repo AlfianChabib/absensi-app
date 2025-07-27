@@ -162,5 +162,5 @@
 }
 
 .container {
-  @apply mx-auto max-w-screen-xl pt-16 px-4 md:px-6 min-h-[calc(100dvh-4rem)];
+  @apply mx-auto max-w-screen-xl pt-16 px-2 md:px-4 min-h-dvh;
 }

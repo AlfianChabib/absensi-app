@@ -2,6 +2,8 @@ import { betterFetch } from "@better-fetch/fetch";
 import { NextRequest, NextResponse } from "next/server";
 import { Session } from "./lib/auth-client";
 
+const dashboardPages = ["/class", "/grade", "/attendance", "/export", "/import"];
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const { data: session } = await betterFetch<Session>("/api/auth/get-session", {
@@ -12,17 +14,17 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  if (pathname === "/grade" && !session) {
+  if (dashboardPages.includes(pathname) && !session) {
     return NextResponse.redirect(new URL("/sign-in", request.url));
   }
 
   if (pathname === "/" && session) {
-    return NextResponse.redirect(new URL("/grade", request.url));
+    return NextResponse.redirect(new URL("/class", request.url));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/", "/grade", "/attendance", "/export"],
+  matcher: ["/", "/class", "/grade", "/attendance", "/export", "/import"],
 };

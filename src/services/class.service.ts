@@ -1,3 +1,4 @@
+import { CreateClassSchema } from "@/validation/class.validation";
 import { Class } from "@prisma/client";
 
 export class ClassService {
@@ -17,6 +18,19 @@ export class ClassService {
       headers: {
         "Content-Type": "application/json",
       },
+    });
+
+    const data = await response.json();
+    return data;
+  }
+
+  static async createClass(payload: CreateClassSchema) {
+    const response = await fetch("/api/class", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();

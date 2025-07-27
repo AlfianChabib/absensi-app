@@ -1,6 +1,7 @@
 import { ClassService } from "@/services/class.service";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import CLientPage from "./page.client";
+import CreateClassDialog from "./_components/CreateClassDialog";
 
 export default async function page() {
   const queryClient = new QueryClient();
@@ -10,10 +11,11 @@ export default async function page() {
   });
 
   return (
-    <div className="container">
+    <div className="container relative">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <CLientPage />
       </HydrationBoundary>
+      <CreateClassDialog />
     </div>
   );
 }

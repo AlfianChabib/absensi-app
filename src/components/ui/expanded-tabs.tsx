@@ -75,7 +75,7 @@ export function ExpandedTabs({ tabs, className, activeColor = "text-primary", on
   const Separator = () => <div className=" h-[24px] w-[1.2px] bg-border" aria-hidden="true" />;
 
   return (
-    <div className={cn(" flex gap-2 items-center rounded-2xl border bg-background p-1 shadow-sm ", className)}>
+    <div className={cn("flex gap-2 items-center rounded-2xl border bg-background p-1 shadow-sm ", className)}>
       {tabs.map((tab, index) => {
         if (tab.type === "separator") {
           return <Separator key={`separator-${index}`} />;

@@ -10,3 +10,5 @@ export class ClassValidation {
     }),
   });
 }
+
+export type CreateClassSchema = z.infer<typeof ClassValidation.create>;
