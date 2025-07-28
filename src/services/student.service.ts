@@ -1,3 +1,4 @@
+import { UpdateStudentSchema } from "@/validation/student.validation";
 import { Student } from "@prisma/client";
 
 export class StudentService {
@@ -18,6 +19,32 @@ export class StudentService {
       headers: {
         "Content-Type": "application/json",
       },
+    });
+
+    const data = await response.json();
+    return data;
+  }
+
+  static async createStudent({ student }: { student: Student }) {
+    const response = await fetch(`/api/students`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(student),
+    });
+
+    const data = await response.json();
+    return data;
+  }
+
+  static async updateStudent(payload: UpdateStudentSchema) {
+    const response = await fetch(`/api/students/${payload.studentId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();

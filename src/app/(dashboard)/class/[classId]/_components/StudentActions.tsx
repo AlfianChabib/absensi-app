@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { MoreHorizontal } from "lucide-react";
 import DeleteStudentAlert from "./DeleteStudentAlert";
+import UpdateStudentDialog from "./UpdateStudentDialog";
 
 type StudentActionProps = {
   student: Student;
@@ -19,10 +20,16 @@ type StudentActionProps = {
 export default function StudentAction({ student }: StudentActionProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleOpenAlert = () => {
     setDropdownOpen(false);
     setTimeout(() => setAlertOpen(true), 10);
+  };
+
+  const handleOpenDialog = () => {
+    setDropdownOpen(false);
+    setTimeout(() => setDialogOpen(true), 10);
   };
 
   return (
@@ -36,9 +43,11 @@ export default function StudentAction({ student }: StudentActionProps) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuItem onSelect={() => handleOpenAlert()}>Hapus Murid</DropdownMenuItem>
+          <DropdownMenuItem onSelect={() => handleOpenDialog()}>Update Murid</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
       <DeleteStudentAlert studentId={student.id} open={alertOpen} onOpenChange={setAlertOpen} />
+      <UpdateStudentDialog student={student} open={dialogOpen} onOpenChange={setDialogOpen} />
     </div>
   );
 }

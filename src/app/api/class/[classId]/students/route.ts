@@ -7,6 +7,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   try {
     const students = await prisma.student.findMany({
       where: { classId: classId },
+      orderBy: { name: "asc" },
     });
     return NextResponse.json({ data: students, message: "Success get students" }, { status: 200 });
   } catch (error) {
