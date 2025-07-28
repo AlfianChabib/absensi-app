@@ -16,3 +16,10 @@ export const TABS = [
   { type: "separator" as const },
   { title: "Import", icon: FolderUp, href: "/import" },
 ];
+
+export const ATTENDANCE_STATUS = [
+  { value: "HADIR", label: "Hadir" },
+  { value: "IZIN", label: "Izin" },
+  { value: "SAKIT", label: "Sakit" },
+  { value: "ALFA", label: "Alfa" },
+];

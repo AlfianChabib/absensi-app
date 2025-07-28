@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import TanstackProvider from "@/components/provider/tanstack-provicer";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,10 +48,12 @@ export default function RootLayout({
   return (
     <html lang="id" suppressHydrationWarning={true}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <TanstackProvider>
-          <Toaster position="top-center" richColors={true} />
-          {children}
-        </TanstackProvider>
+        <NuqsAdapter>
+          <TanstackProvider>
+            <Toaster position="top-center" richColors={true} />
+            {children}
+          </TanstackProvider>
+        </NuqsAdapter>
       </body>
     </html>
   );

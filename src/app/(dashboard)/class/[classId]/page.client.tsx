@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StudentTab from "./_components/StudentTab";
+import AttendanceTab from "./_components/AttendanceTab";
 
 export default function ClientPage() {
   return (
@@ -15,7 +16,9 @@ export default function ClientPage() {
         <TabsContent value="students">
           <StudentTab />
         </TabsContent>
-        <TabsContent value="attendances"></TabsContent>
+        <TabsContent value="attendances">
+          <AttendanceTab />
+        </TabsContent>
         <TabsContent value="grades"></TabsContent>
       </Tabs>
     </div>
