@@ -18,7 +18,7 @@ export default async function page({ params }: { params: Promise<{ classId: stri
   });
 
   return (
-    <div className="container relative my-2 pb-14 md:pb-2">
+    <div className="container relative pb-14 md:pb-2">
       <HydrationBoundary state={dehydrate(queryClient)}>
         <ClientPage />
       </HydrationBoundary>

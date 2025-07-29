@@ -6,7 +6,7 @@ import AttendanceTab from "./_components/AttendanceTab";
 
 export default function ClientPage() {
   return (
-    <div className="flex w-full flex-col gap-6">
+    <div className="flex w-full flex-col gap-6 py-2">
       <Tabs defaultValue="students">
         <TabsList className="bg-accent rounded-sm md:w-fit w-full shadow-xs">
           <TabsTrigger value="students">Murid</TabsTrigger>

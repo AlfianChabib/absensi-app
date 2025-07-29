@@ -55,6 +55,15 @@ export default function CreateAttendanceForm() {
     }
   }, [form, data]);
 
+  useEffect(() => {
+    if (classId) {
+      form.setValue("classId", classId);
+    }
+    if (date) {
+      form.setValue("date", new Date(date).toISOString());
+    }
+  }, [form, classId, date]);
+
   const { fields } = useFieldArray({
     control: form.control,
     name: "data",
@@ -76,15 +85,31 @@ export default function CreateAttendanceForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubit)} className="flex flex-col w-full mt-2 gap-2 mb-14 relative">
+      <div className="flex justify-between items-center border rounded-md p-1 my-2 sticky top-18 shadow-xs bg-background z-50">
+        <p className="text-sm text-muted-foreground leading-4">{data?.students.length} Siswa</p>
+        <div className="space-x-2 flex text-primary">
+          {ATTENDANCE_STATUS.map((item) => (
+            <p
+              key={item.value}
+              className="capitalize border border-primary rounded-sm size-[30px] text-center place-content-center leading-4"
+            >
+              {item.label.at(0)}
+            </p>
+          ))}
+        </div>
+      </div>
+      <form
+        onSubmit={form.handleSubmit(handleSubit)}
+        className="flex flex-col w-full mt-2 gap-2 mb-14 md:mb-2 relative"
+      >
         {fields.map((field, index) => (
           <FormField
             control={form.control}
             key={field.id}
             name={`data.${index}.status`}
             render={({ field: itemField }) => (
-              <FormItem className="flex items-center justify-between w-full">
-                <FormLabel className="pl-2 whitespace-pre-wrap">{field.name}</FormLabel>
+              <FormItem className="flex items-center justify-between w-full border p-1 rounded-md">
+                <FormLabel className="whitespace-pre-wrap md:text-base">{field.name}</FormLabel>
                 <FormControl>
                   <RadioGroup
                     className="flex flex-wrap gap-2"
@@ -108,7 +133,7 @@ export default function CreateAttendanceForm() {
             )}
           />
         ))}
-        <Button type="submit" disabled={isPending} className="sticky bottom-14 w-full">
+        <Button type="submit" disabled={isPending} className="sticky bottom-14 md:bottom-4 w-full">
           Save
         </Button>
       </form>

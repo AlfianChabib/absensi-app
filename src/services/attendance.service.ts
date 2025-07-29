@@ -1,3 +1,4 @@
+import { AttendanceResult } from "@/types/attendance";
 import { CreateAttendanceSchema } from "@/validation/attendance.validation";
 import { Student } from "@prisma/client";
 
@@ -10,7 +11,7 @@ export class AttendanceService {
     });
 
     const data = await response.json();
-    return data.data as unknown[];
+    return data.data as AttendanceResult[];
   }
 
   static async getStudentsAttendance({ classId, date }: { classId: string; date: Date }) {
