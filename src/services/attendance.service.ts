@@ -3,6 +3,17 @@ import { CreateAttendanceSchema } from "@/validation/attendance.validation";
 import { Student } from "@prisma/client";
 
 export class AttendanceService {
+  static async getAll() {
+    const response = await fetch(`/api/attendances`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    return data.data as AttendanceResult[];
+  }
+
   static async getAttendances({ classId }: { classId: string }) {
     const response = await fetch(`/api/class/${classId}/attendances`, {
       headers: {
@@ -15,7 +26,7 @@ export class AttendanceService {
   }
 
   static async getStudentsAttendance({ classId, date }: { classId: string; date: Date }) {
-    const response = await fetch(`/api/attendances?classId=${classId}&date=${date}`, {
+    const response = await fetch(`/api/attendances/student?classId=${classId}&date=${date}`, {
       headers: {
         "Content-Type": "application/json",
       },

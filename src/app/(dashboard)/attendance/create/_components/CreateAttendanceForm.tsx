@@ -50,8 +50,6 @@ export default function CreateAttendanceForm() {
         "data",
         data.students.map((student) => ({ studentId: student.id, name: student.name, status: "HADIR" }))
       );
-    } else {
-      form.setValue("data", []);
     }
   }, [form, data]);
 
@@ -75,10 +73,18 @@ export default function CreateAttendanceForm() {
     console.log(payload);
   };
 
-  if (data && data.existAttendance > 0) {
+  if (data && data.existAttendance > 0 && data.students.length > 0) {
     return (
       <div className="flex flex-col mt-2 p-2 justify-center items-center border border-dashed rounded-md h-20 border-primary">
         <p>Absen pada tangal {format(new Date(date), "PPP", { locale: id })} sudah dibuat.</p>
+      </div>
+    );
+  }
+
+  if (!classId) {
+    return (
+      <div className="flex flex-col mt-2 p-2 justify-center items-center border border-dashed rounded-md h-20 border-primary">
+        <p>Silahkan pilih kelas terlebih dahulu</p>
       </div>
     );
   }
