@@ -16,6 +16,7 @@ import { useState } from "react";
 import CreateAttendanceForm from "./_components/CreateAttendanceForm";
 
 export default function ClientPage() {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const [{ classId, date }, setSearchParams] = useQueryStates(createAttendanceParsers);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -59,7 +60,11 @@ export default function ClientPage() {
             <Calendar
               mode="single"
               selected={date}
+              locale={id}
+              timeZone={timeZone}
               onSelect={(newDate) => {
+                // if (newDate) setSearchParams({ date: new Date(format(newDate, "yyyy-MM-dd", { locale: id })) });
+                // if (newDate) setSearchParams({ date: new TZDate(newDate, timeZone) });
                 if (newDate) setSearchParams({ date: newDate });
                 setIsOpen(false);
               }}

@@ -16,7 +16,10 @@ export async function GET(request: NextRequest) {
     }
 
     const attendances = await prisma.attendance.count({
-      where: { classId: existClass.id, date: new Date(date!) },
+      where: {
+        classId: existClass.id,
+        date: new Date(date!),
+      },
     });
 
     const students = await prisma.student.findMany({
@@ -29,6 +32,7 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     if (error instanceof Error) {
+      console.log(error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
   }

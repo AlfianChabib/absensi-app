@@ -24,13 +24,15 @@ export default function CreateAttendanceForm() {
     mutationFn: AttendanceService.createAttendance,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["attendances"] });
+      queryClient.invalidateQueries({ queryKey: ["students-attendance"] });
       toast.success(data.message);
     },
   });
 
   const { data } = useQuery({
-    queryKey: ["students-attendance"],
-    queryFn: () => AttendanceService.getStudentsAttendance({ classId, date: new Date(date).toISOString() }),
+    queryKey: ["students-attendance", classId, date],
+    queryFn: () => AttendanceService.getStudentsAttendance({ classId, date: date }),
+    enabled: !!classId,
   });
 
   const form = useForm<CreateAttendanceSchema>({
@@ -48,6 +50,8 @@ export default function CreateAttendanceForm() {
         "data",
         data.students.map((student) => ({ studentId: student.id, name: student.name, status: "HADIR" }))
       );
+    } else {
+      form.setValue("data", []);
     }
   }, [form, data]);
 

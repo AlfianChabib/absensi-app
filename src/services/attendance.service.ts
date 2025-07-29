@@ -13,7 +13,7 @@ export class AttendanceService {
     return data.data as unknown[];
   }
 
-  static async getStudentsAttendance({ classId, date }: { classId: string; date: string }) {
+  static async getStudentsAttendance({ classId, date }: { classId: string; date: Date }) {
     const response = await fetch(`/api/attendances?classId=${classId}&date=${date}`, {
       headers: {
         "Content-Type": "application/json",
