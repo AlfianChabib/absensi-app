@@ -1,6 +1,6 @@
 import { AttendanceResult } from "@/types/attendance";
-import { CreateAttendanceSchema } from "@/validation/attendance.validation";
-import { Student } from "@prisma/client";
+import { CreateAttendanceSchema, UpdateAttendanceSchema } from "@/validation/attendance.validation";
+import { Attendance, Student } from "@prisma/client";
 
 export class AttendanceService {
   static async getAll() {
@@ -39,6 +39,30 @@ export class AttendanceService {
   static async createAttendance(payload: CreateAttendanceSchema) {
     const response = await fetch(`/api/attendances?classId=${payload.classId}&date=${payload.date}`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    return data;
+  }
+
+  static async getByClassIdAndDate({ classId, date }: { classId: string; date: Date }) {
+    const response = await fetch(`/api/attendances/${classId}/${date}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    return data.data as (Attendance & { student: { name: string } })[];
+  }
+
+  static async updateAttendance(payload: UpdateAttendanceSchema) {
+    const response = await fetch(`/api/attendances`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },

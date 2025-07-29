@@ -2,7 +2,7 @@
 
 import { AttendanceService } from "@/services/attendance.service";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, getUnixTime } from "date-fns";
 import { id } from "date-fns/locale";
 import Link from "next/link";
 
@@ -16,7 +16,7 @@ export default function ClientPage() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-2">
       {data.map((item) => (
         <Link
-          href={`/attendance/create?classId=${item.classId}&date=${item.date}`}
+          href={`/attendance/${item.classId}/${getUnixTime(item.date)}`}
           key={item.date}
           className="border rounded-sm p-2 w-full bg-secondary/50 shadow-xs border-primary/20 space-y-1"
         >
