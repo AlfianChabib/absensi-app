@@ -14,7 +14,7 @@ export class GradeService {
   }
 
   static async createGrade(payload: CreateGradeSchema) {
-    const response = await fetch(`/api/grades?classId=${payload.classId}&date=${payload.date}`, {
+    const response = await fetch(`/api/grades`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

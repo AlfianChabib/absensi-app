@@ -77,7 +77,10 @@ export default function CreateGradeForm() {
   if (data && data.existGrade > 0 && data.students.length > 0) {
     return (
       <div className="flex flex-col mt-2 p-2 justify-center items-center border border-dashed rounded-md h-20 border-primary">
-        <p>Absen pada tangal {format(new Date(date), "PPP", { locale: id })} sudah dibuat.</p>
+        <p>
+          Penilaian <span className="capitalize">{type.split("_").join(" ")}</span> pada tangal{" "}
+          {format(new Date(date), "PPP", { locale: id })} sudah dibuat.
+        </p>
       </div>
     );
   }
@@ -97,32 +100,6 @@ export default function CreateGradeForm() {
         className="flex flex-col w-full mt-2 gap-2 mb-14 md:mb-2 relative"
       >
         <div className="flex justify-between items-center border rounded-md sticky top-18 shadow-xs bg-background z-50 p-2">
-          {/* <FormField
-            control={form.control}
-            name="type"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex gap-2">
-                  <FormLabel>Tipe Penilaian</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Pilih tipe penilaian" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {Object.entries(AssessmentType).map(([key, value]) => (
-                        <SelectItem key={key} value={key}>
-                          {value}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          /> */}
           <p className="text-sm text-muted-foreground leading-4">{data?.students.length} Siswa</p>
         </div>
         {fields.map((field, index) => (
