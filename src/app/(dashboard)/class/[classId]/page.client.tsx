@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StudentTab from "./_components/StudentTab";
 import AttendanceTab from "./_components/AttendanceTab";
+import { Suspense } from "react";
 
 export default function ClientPage() {
   return (
@@ -14,10 +15,14 @@ export default function ClientPage() {
           <TabsTrigger value="grades">Nilai</TabsTrigger>
         </TabsList>
         <TabsContent value="students">
-          <StudentTab />
+          <Suspense>
+            <StudentTab />
+          </Suspense>
         </TabsContent>
         <TabsContent value="attendances">
-          <AttendanceTab />
+          <Suspense>
+            <AttendanceTab />
+          </Suspense>
         </TabsContent>
         <TabsContent value="grades"></TabsContent>
       </Tabs>

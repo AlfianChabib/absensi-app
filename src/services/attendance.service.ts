@@ -57,11 +57,11 @@ export class AttendanceService {
     });
 
     const data = await response.json();
-    return data.data as (Attendance & { student: { name: string } })[];
+    return data.data as (Attendance & { student: { name: string }; Renamedclass: { name: string } })[];
   }
 
   static async updateAttendance(payload: UpdateAttendanceSchema) {
-    const response = await fetch(`/api/attendances`, {
+    const response = await fetch(`/api/attendances/${payload.classId}/${payload.date}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

@@ -1,9 +1,5 @@
 "use client";
 
-import { PlusIcon } from "lucide-react";
-
-import { Button } from "@/components/ui/button";
-
 import UserMenu from "../navbar-components/user-menu";
 import { Suspense } from "react";
 import UserMenuFallback from "../navbar-components/avatar-fallback";
@@ -25,10 +21,10 @@ export default function Navbar() {
         <NavigatorMenu />
         {/* Right side */}
         <div className="flex flex-1 items-center justify-end gap-4">
-          <Button size="sm" className="text-sm max-sm:aspect-square max-sm:p-0">
+          {/* <Button size="sm" className="text-sm max-sm:aspect-square max-sm:p-0">
             <PlusIcon className="opacity-60 sm:-ms-1" size={16} aria-hidden="true" />
             <span className="max-sm:sr-only">Post</span>
-          </Button>
+          </Button> */}
           <Suspense fallback={<UserMenuFallback />}>
             <UserMenu />
           </Suspense>

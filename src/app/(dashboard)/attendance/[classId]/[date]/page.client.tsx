@@ -3,15 +3,18 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { queryClient } from "@/lib/query-client";
 import { AttendanceService } from "@/services/attendance.service";
 import { ATTENDANCE_STATUS } from "@/utils/constants";
 import { AttendanceValidation, UpdateAttendanceSchema } from "@/validation/attendance.validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import { fromUnixTime } from "date-fns";
+import { format, fromUnixTime } from "date-fns";
+import { id } from "date-fns/locale";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 export default function ClientPage() {
   const { classId, date } = useParams<{ classId: string; date: string }>();
@@ -19,8 +22,13 @@ export default function ClientPage() {
 
   const { mutate, isPending } = useMutation({
     mutationFn: AttendanceService.updateAttendance,
-    onSuccess: () => {
+    onSuccess: (data) => {
       setedit(false);
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["attendances", classId, date] });
+    },
+    onError: () => {
+      toast.error("Something went wrong");
     },
   });
 
@@ -46,14 +54,13 @@ export default function ClientPage() {
 
   const handeSubmit = (payload: UpdateAttendanceSchema) => {
     mutate(payload);
-    console.log(payload);
   };
 
   return (
     <div className="flex flex-col py-2">
       <div className="flex justify-between border p-2">
-        <h1>kelas</h1>
-        <p>date</p>
+        <h1 className="capitalize">{data[0].Renamedclass.name}</h1>
+        <p>{format(new Date(fromUnixTime(parseInt(date))), "PPP", { locale: id })}</p>
       </div>
       <div className="flex justify-between items-center border rounded-md p-1 mt-2 sticky top-18 shadow-xs bg-background z-50">
         <p className="text-sm text-muted-foreground leading-4">{data?.length} Siswa</p>
@@ -108,17 +115,16 @@ export default function ClientPage() {
               )}
             />
           ))}
-          {edit && (
+          {edit ? (
             <div className="sticky flex bottom-14 md:bottom-4 w-full gap-2">
-              <Button type="submit" disabled={isPending} className="flex-1">
-                Save
-              </Button>
               <Button variant={"outline"} onClick={() => setedit(false)} disabled={!edit} className="flex-1">
                 Cancel
               </Button>
+              <Button type="submit" disabled={isPending} className="flex-1">
+                Save
+              </Button>
             </div>
-          )}
-          {!edit && (
+          ) : (
             <Button onClick={() => setedit(true)} className="sticky bottom-14 md:bottom-4 w-full">
               Edit
             </Button>

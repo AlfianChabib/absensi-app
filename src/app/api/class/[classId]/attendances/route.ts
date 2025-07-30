@@ -69,6 +69,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const attendances = await prisma.attendance.findMany({
       where: { classId },
       select: { date: true, status: true },
+      orderBy: { date: "desc" },
     });
 
     // Group by date

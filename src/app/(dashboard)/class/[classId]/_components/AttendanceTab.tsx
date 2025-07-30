@@ -3,7 +3,7 @@
 import { buttonVariants } from "@/components/ui/button";
 import { AttendanceService } from "@/services/attendance.service";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, getUnixTime } from "date-fns";
 import { id } from "date-fns/locale";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -21,8 +21,9 @@ export default function AttendanceTab() {
     <div className="relative">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {data.map((item) => (
-          <div
+          <Link
             key={item.date}
+            href={`/attendance/${classId}/${getUnixTime(item.date)}`}
             className="border rounded-sm p-2 w-full bg-secondary/50 shadow-xs border-primary/20 space-y-1"
           >
             <div className="flex items-center justify-between">
@@ -35,7 +36,7 @@ export default function AttendanceTab() {
               <p>Izin: {item.calc.izin}</p>
               <p>Alfa: {item.calc.alfa}</p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <Link
