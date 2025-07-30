@@ -15,7 +15,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
         student: {
           select: { name: true },
         },
-        Renamedclass: {
+        class: {
           select: { name: true },
         },
       },

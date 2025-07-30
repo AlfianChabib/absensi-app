@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import StudentTab from "./_components/StudentTab";
 import AttendanceTab from "./_components/AttendanceTab";
 import { Suspense } from "react";
+import GradeTab from "./_components/GradeTab";
 
 export default function ClientPage() {
   return (
@@ -24,7 +25,11 @@ export default function ClientPage() {
             <AttendanceTab />
           </Suspense>
         </TabsContent>
-        <TabsContent value="grades"></TabsContent>
+        <TabsContent value="grades">
+          <Suspense>
+            <GradeTab />
+          </Suspense>
+        </TabsContent>
       </Tabs>
     </div>
   );

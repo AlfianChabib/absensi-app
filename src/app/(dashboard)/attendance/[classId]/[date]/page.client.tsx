@@ -59,7 +59,7 @@ export default function ClientPage() {
   return (
     <div className="flex flex-col py-2">
       <div className="flex justify-between border p-2">
-        <h1 className="capitalize">{data[0].Renamedclass.name}</h1>
+        <h1 className="capitalize">{data[0].class.name}</h1>
         <p>{format(new Date(fromUnixTime(parseInt(date))), "PPP", { locale: id })}</p>
       </div>
       <div className="flex justify-between items-center border rounded-md p-1 mt-2 sticky top-18 shadow-xs bg-background z-50">

@@ -17,6 +17,7 @@ model Class {
   attendances Attendance[]
   user        User         @relation(fields: [userId], references: [id])
   students    Student[]
+  grades      Grade[]
 
   @@map("class")
 }
@@ -37,15 +38,15 @@ model Student {
 }
 
 model Attendance {
-  id           String           @id @default(cuid())
-  status       AttendanceStatus
-  createdAt    DateTime         @default(now())
-  updatedAt    DateTime         @updatedAt
-  studentId    String
-  classId      String
-  date         DateTime         @db.Date
-  Renamedclass Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
-  student      Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  id        String           @id @default(cuid())
+  status    AttendanceStatus
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  studentId String
+  classId   String
+  date      DateTime         @db.Date
+  class     Class            @relation(fields: [classId], references: [id], onDelete: Cascade)
+  student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, date])
   @@map("attendances")
@@ -57,9 +58,13 @@ model Grade {
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   studentId      String
+  date           DateTime       @db.Date
   assessmentType AssessmentType
   student        Student        @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  class          Class          @relation(fields: [classId], references: [id])
+  classId        String
 
+  @@unique([studentId, date])
   @@map("grades")
 }
 

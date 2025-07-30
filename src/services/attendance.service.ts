@@ -57,7 +57,7 @@ export class AttendanceService {
     });
 
     const data = await response.json();
-    return data.data as (Attendance & { student: { name: string }; Renamedclass: { name: string } })[];
+    return data.data as (Attendance & { student: { name: string }; class: { name: string } })[];
   }
 
   static async updateAttendance(payload: UpdateAttendanceSchema) {
