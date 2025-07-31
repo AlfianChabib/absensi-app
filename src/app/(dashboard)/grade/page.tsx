@@ -1,19 +1,23 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { Suspense } from "react";
 import ClientPage from "./page.client";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { GradeService } from "@/services/grade.service";
 
 export default async function page() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["grades"],
+    queryFn: () => GradeService.getAll(),
   });
 
   return (
     <div className="container">
-      <div>{session?.user.email}</div>
-      <Suspense fallback={<div suppressHydrationWarning={true}>Loading...</div>}>
-        <ClientPage />
-      </Suspense>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense>
+          <ClientPage />
+        </Suspense>
+      </HydrationBoundary>
     </div>
   );
 }

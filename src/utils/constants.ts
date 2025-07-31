@@ -23,3 +23,10 @@ export const ATTENDANCE_STATUS = [
   { value: "SAKIT", label: "Sakit" },
   { value: "ALFA", label: "Alfa" },
 ];
+
+export const AssessmentType = {
+  TUGAS: "Tugas",
+  ULANGAN_HARIAN: "Ulangan Harian",
+  UTS: "UTS",
+  UAS: "UAS",
+};

@@ -23,6 +23,7 @@ export default function CreateGradeForm() {
     mutationFn: GradeService.createGrade,
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["students-grade"] });
+      queryClient.invalidateQueries({ queryKey: ["grades"] });
       toast.success(data.message);
     },
   });
@@ -111,7 +112,41 @@ export default function CreateGradeForm() {
               <FormItem className="flex items-center justify-between w-full border p-1 rounded-md">
                 <FormLabel className="whitespace-pre-wrap md:text-base">{field.name}</FormLabel>
                 <FormControl>
-                  <Input {...itemField} type="number" className="w-20" inputMode="numeric" min={0} max={100} />
+                  <Input
+                    {...itemField}
+                    type="number"
+                    className="w-20"
+                    inputMode="numeric"
+                    min={0}
+                    max={100}
+                    onKeyDown={(e) => {
+                      const blockedKeys = ["+", "-", "e", "E", ".", ","];
+                      if (blockedKeys.includes(e.key)) {
+                        e.preventDefault();
+                      }
+                    }}
+                    onChange={(e) => {
+                      let value = e.target.value;
+                      value = value.replace(/[^0-9]/g, "");
+                      const numValue = parseInt(value);
+                      if (numValue > 100) {
+                        value = "100";
+                      } else if (numValue < 0) {
+                        value = "0";
+                      }
+                      itemField.onChange(value);
+                    }}
+                    onFocus={() => {
+                      if (itemField.value === 0) {
+                        itemField.onChange("");
+                      }
+                    }}
+                    onBlur={(e) => {
+                      if (e.target.value === "") {
+                        itemField.onChange(0);
+                      }
+                    }}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

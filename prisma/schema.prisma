@@ -64,7 +64,7 @@ model Grade {
   class          Class          @relation(fields: [classId], references: [id])
   classId        String
 
-  @@unique([studentId, date])
+  @@unique([studentId, date, assessmentType])
   @@map("grades")
 }
 
