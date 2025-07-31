@@ -5,6 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { format, getUnixTime } from "date-fns";
 import { id } from "date-fns/locale";
 import Link from "next/link";
+import AttendanceActions from "../class/[classId]/_components/AttendanceActions";
 
 export default function ClientPage() {
   const { data } = useSuspenseQuery({
@@ -22,13 +23,16 @@ export default function ClientPage() {
         >
           <div className="flex items-center justify-between">
             <h1 className="capitalize font-medium">{item.className}</h1>
-            <p>{format(new Date(item.date), "PPP", { locale: id })}</p>
+            <AttendanceActions attendance={item} />
           </div>
-          <div className="flex text-sm gap-2 text-muted-foreground">
-            <p>Hadir: {item.calc.hadir}</p>
-            <p>Sakit: {item.calc.sakit}</p>
-            <p>Izin: {item.calc.izin}</p>
-            <p>Alfa: {item.calc.alfa}</p>
+          <div className="flex items-center justify-between">
+            <p>{format(new Date(item.date), "PPP", { locale: id })}</p>
+            <div className="flex text-sm gap-2 text-muted-foreground">
+              <p>Hadir: {item.calc.hadir}</p>
+              <p>Sakit: {item.calc.sakit}</p>
+              <p>Izin: {item.calc.izin}</p>
+              <p>Alfa: {item.calc.alfa}</p>
+            </div>
           </div>
         </Link>
       ))}

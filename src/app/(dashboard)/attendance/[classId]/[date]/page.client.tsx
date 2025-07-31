@@ -41,7 +41,7 @@ export default function ClientPage() {
     resolver: zodResolver(AttendanceValidation.update),
     defaultValues: {
       classId,
-      date: fromUnixTime(parseInt(date)).toISOString(),
+      date: fromUnixTime(parseInt(date)),
       data: data.map((item) => ({ attendanceId: item.id, name: item.student.name, status: item.status })),
     },
   });

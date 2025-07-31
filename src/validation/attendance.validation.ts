@@ -15,7 +15,7 @@ export class AttendanceValidation {
   });
 
   static update = z.object({
-    date: z.string().min(1),
+    date: z.date(),
     classId: z.string().min(1),
     data: z.array(
       z.object({
