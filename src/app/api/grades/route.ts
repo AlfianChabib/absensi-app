@@ -18,12 +18,13 @@ export type GradeResult = {
   };
 };
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const classId = request.nextUrl.searchParams.get("classId");
   const { user } = await getSession();
 
   try {
     const data = await prisma.grade.findMany({
-      where: { class: { userId: user.id } },
+      where: { class: { userId: user.id, id: classId ? classId : undefined } },
       include: { class: true },
     });
 

@@ -12,7 +12,7 @@ import Link from "next/link";
 export default function ClientPage() {
   const { data } = useSuspenseQuery({
     queryKey: ["grades"],
-    queryFn: () => GradeService.getAll(),
+    queryFn: () => GradeService.getAll({}),
   });
 
   return (

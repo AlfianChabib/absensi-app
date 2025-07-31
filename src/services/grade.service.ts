@@ -3,8 +3,8 @@ import { CreateGradeSchema } from "@/validation/grade.validation";
 import { AssessmentType, Student } from "@prisma/client";
 
 export class GradeService {
-  static async getAll() {
-    const response = await fetch(`/api/grades`, {
+  static async getAll({ classId }: { classId?: string }) {
+    const response = await fetch(`/api/grades${classId ? `?classId=${classId}` : ""}`, {
       headers: {
         "Content-Type": "application/json",
       },

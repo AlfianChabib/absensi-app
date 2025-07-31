@@ -8,7 +8,7 @@ export default async function page() {
 
   await queryClient.prefetchQuery({
     queryKey: ["grades"],
-    queryFn: () => GradeService.getAll(),
+    queryFn: () => GradeService.getAll({}),
   });
 
   return (
