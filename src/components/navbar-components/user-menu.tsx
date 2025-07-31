@@ -37,13 +37,13 @@ export default function UserMenu() {
         <Button variant="ghost" className="h-auto p-0 hover:bg-transparent rounded-full border">
           <Avatar>
             <AvatarImage src={session?.user.image as string} alt="Profile image" />
-            <AvatarFallback>{session?.user.name.charAt(0)}</AvatarFallback>
+            <AvatarFallback className="capitalize">{session?.user.name.charAt(0)}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="max-w-64" align="end">
         <DropdownMenuLabel className="flex min-w-0 flex-col">
-          <span className="text-foreground truncate text-sm font-medium">{session?.user.name}</span>
+          <span className="text-foreground truncate text-sm font-medium capitalize">{session?.user.name}</span>
           <span className="text-muted-foreground truncate text-xs font-normal">{session?.user.email}</span>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />

@@ -8,6 +8,7 @@ import { id } from "date-fns/locale";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import AttendanceActions from "./AttendanceActions";
 
 export default function AttendanceTab() {
   const { classId } = useParams<{ classId: string }>();
@@ -28,13 +29,16 @@ export default function AttendanceTab() {
           >
             <div className="flex items-center justify-between">
               <h1 className="capitalize font-medium">{item.className}</h1>
-              <p>{format(new Date(item.date), "PPP", { locale: id })}</p>
+              <AttendanceActions attendance={item} />
             </div>
-            <div className="flex text-sm gap-2 text-muted-foreground">
-              <p>Hadir: {item.calc.hadir}</p>
-              <p>Sakit: {item.calc.sakit}</p>
-              <p>Izin: {item.calc.izin}</p>
-              <p>Alfa: {item.calc.alfa}</p>
+            <div className="flex items-center justify-between">
+              <p>{format(new Date(item.date), "PPP", { locale: id })}</p>
+              <div className="flex text-sm gap-2 text-muted-foreground">
+                <p>Hadir: {item.calc.hadir}</p>
+                <p>Sakit: {item.calc.sakit}</p>
+                <p>Izin: {item.calc.izin}</p>
+                <p>Alfa: {item.calc.alfa}</p>
+              </div>
             </div>
           </Link>
         ))}

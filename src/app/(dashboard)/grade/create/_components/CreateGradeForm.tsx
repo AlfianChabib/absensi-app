@@ -37,7 +37,7 @@ export default function CreateGradeForm() {
     resolver: zodResolver(GradeValidation.create),
     defaultValues: {
       classId,
-      date: new Date(date).toISOString(),
+      date,
       data: [],
     },
   });
@@ -56,7 +56,7 @@ export default function CreateGradeForm() {
       form.setValue("classId", classId);
     }
     if (date) {
-      form.setValue("date", new Date(date).toISOString());
+      form.setValue("date", date);
     }
     if (type) {
       form.setValue("type", type);

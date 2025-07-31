@@ -4,7 +4,7 @@ import z3 from "zod/v3";
 export class GradeValidation {
   static create = z3.object({
     classId: z3.string(),
-    date: z3.string(),
+    date: z3.date(),
     type: z3.nativeEnum(AssessmentType, { message: "Tipe penilaian harus diisi" }),
     data: z3.array(
       z3.object({

@@ -24,7 +24,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ data }, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      return new NextResponse(error.message, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
   }
 }
@@ -50,8 +50,26 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ message: "Success update attendance" }, { status: 200 });
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error);
-      return new NextResponse(error.message, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ classId: string; date: string }> }) {
+  const { classId, date } = await params;
+
+  try {
+    await prisma.attendance.deleteMany({
+      where: {
+        classId: classId,
+        date: new Date(date),
+      },
+    });
+
+    return NextResponse.json({ message: "Success delete attendance" }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
   }
 }

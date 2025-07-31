@@ -25,6 +25,7 @@ export default function CreateAttendanceForm() {
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["attendances"] });
       queryClient.invalidateQueries({ queryKey: ["students-attendance"] });
+      queryClient.invalidateQueries({ queryKey: ["session-attendances"] });
       toast.success(data.message);
     },
   });
@@ -39,7 +40,7 @@ export default function CreateAttendanceForm() {
     resolver: zodResolver(AttendanceValidation.create),
     defaultValues: {
       classId,
-      date: new Date(date).toISOString(),
+      date,
       data: [],
     },
   });
@@ -58,7 +59,7 @@ export default function CreateAttendanceForm() {
       form.setValue("classId", classId);
     }
     if (date) {
-      form.setValue("date", new Date(date).toISOString());
+      form.setValue("date", date);
     }
   }, [form, classId, date]);
 

@@ -3,7 +3,7 @@ import z from "zod";
 
 export class AttendanceValidation {
   static create = z.object({
-    date: z.string().min(1),
+    date: z.date(),
     classId: z.string().min(1),
     data: z.array(
       z.object({
@@ -25,7 +25,13 @@ export class AttendanceValidation {
       })
     ),
   });
+
+  static delete = z.object({
+    date: z.string().min(1),
+    classId: z.string().min(1),
+  });
 }
 
 export type CreateAttendanceSchema = z.infer<typeof AttendanceValidation.create>;
 export type UpdateAttendanceSchema = z.infer<typeof AttendanceValidation.update>;
+export type DeleteAttendanceSchema = z.infer<typeof AttendanceValidation.delete>;

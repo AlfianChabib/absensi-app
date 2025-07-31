@@ -27,17 +27,19 @@ export async function GET() {
       }
     }
 
-    const result: AttendanceResult[] = Array.from(groupedByClass).map(([key, attendances]) => ({
-      className: key.split("+")[0],
-      classId: key.split("+")[1],
-      date: key.split("+")[2],
-      calc: {
-        hadir: attendances.filter((a) => a.status === "HADIR").length,
-        sakit: attendances.filter((a) => a.status === "SAKIT").length,
-        izin: attendances.filter((a) => a.status === "IZIN").length,
-        alfa: attendances.filter((a) => a.status === "ALFA").length,
-      },
-    }));
+    const result: AttendanceResult[] = Array.from(groupedByClass)
+      .map(([key, attendances]) => ({
+        className: key.split("+")[0],
+        classId: key.split("+")[1],
+        date: key.split("+")[2],
+        calc: {
+          hadir: attendances.filter((a) => a.status === "HADIR").length,
+          sakit: attendances.filter((a) => a.status === "SAKIT").length,
+          izin: attendances.filter((a) => a.status === "IZIN").length,
+          alfa: attendances.filter((a) => a.status === "ALFA").length,
+        },
+      }))
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
     return NextResponse.json({ data: result, message: "Success get attendances" }, { status: 200 });
   } catch (error) {

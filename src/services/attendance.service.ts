@@ -72,4 +72,16 @@ export class AttendanceService {
     const data = await response.json();
     return data;
   }
+
+  static async deleteAttendance({ classId, date }: { classId: string; date: Date }) {
+    const response = await fetch(`/api/attendances/${classId}/${date}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    return data;
+  }
 }
