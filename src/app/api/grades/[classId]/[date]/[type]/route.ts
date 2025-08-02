@@ -75,3 +75,26 @@ export async function PUT(
     }
   }
 }
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ classId: string; date: string; type: string }> }
+) {
+  const { classId, date, type } = await params;
+
+  try {
+    await prisma.grade.deleteMany({
+      where: {
+        class: { id: classId },
+        date: fromUnixTime(parseInt(date)),
+        assessmentType: type as AssessmentType,
+      },
+    });
+
+    return NextResponse.json({ message: "Success delete grade" }, { status: 200 });
+  } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+  }
+}

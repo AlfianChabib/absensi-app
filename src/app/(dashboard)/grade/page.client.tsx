@@ -8,6 +8,7 @@ import { format, getUnixTime } from "date-fns";
 import { id } from "date-fns/locale";
 import { Plus } from "lucide-react";
 import Link from "next/link";
+import GradeAction from "../class/[classId]/_components/GradeAction";
 
 export default function ClientPage() {
   const { data } = useSuspenseQuery({
@@ -28,6 +29,7 @@ export default function ClientPage() {
               <h1 className="capitalize font-medium">
                 {item.className} - <span>{AssessmentType[item.assessmentType]}</span>
               </h1>
+              <GradeAction grade={item} />
             </div>
             <div className="flex items-center justify-between">
               <p>{format(new Date(item.date), "PPP", { locale: id })}</p>

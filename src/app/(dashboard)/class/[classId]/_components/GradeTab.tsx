@@ -9,6 +9,7 @@ import { id } from "date-fns/locale";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import GradeAction from "./GradeAction";
 
 export default function GradeTab() {
   const { classId } = useParams<{ classId: string }>();
@@ -31,6 +32,7 @@ export default function GradeTab() {
               <h1 className="capitalize font-medium">
                 {item.className} - <span>{AssessmentType[item.assessmentType]}</span>
               </h1>
+              <GradeAction grade={item} />
             </div>
             <div className="flex items-center justify-between">
               <p>{format(new Date(item.date), "PPP", { locale: id })}</p>

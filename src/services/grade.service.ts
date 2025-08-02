@@ -61,4 +61,16 @@ export class GradeService {
     const data = await response.json();
     return data;
   }
+
+  static async delete(payload: { classId: string; date: number; type: AssessmentType }) {
+    const response = await fetch(`/api/grades/${payload.classId}/${payload.date}/${payload.type}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    return data;
+  }
 }
