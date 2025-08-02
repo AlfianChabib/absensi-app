@@ -38,19 +38,21 @@ export async function GET(request: NextRequest) {
       groupedByClassDateAssesmentType.get(key)?.push(item);
     }
 
-    const result: GradeResult[] = Array.from(groupedByClassDateAssesmentType).map(([key, grade]) => ({
-      className: key.split("+")[0],
-      classId: key.split("+")[1],
-      date: new Date(key.split("+")[3]),
-      assessmentType: key.split("+")[2] as AssessmentType,
-      stats: {
-        a: grade.filter((g) => g.score >= 90 && g.score <= 100).length,
-        b: grade.filter((g) => g.score >= 80 && g.score <= 89).length,
-        c: grade.filter((g) => g.score >= 70 && g.score <= 79).length,
-        d: grade.filter((g) => g.score >= 60 && g.score <= 69).length,
-        e: grade.filter((g) => g.score >= 0 && g.score <= 59).length,
-      },
-    }));
+    const result: GradeResult[] = Array.from(groupedByClassDateAssesmentType)
+      .map(([key, grade]) => ({
+        className: key.split("+")[0],
+        classId: key.split("+")[1],
+        date: new Date(key.split("+")[3]),
+        assessmentType: key.split("+")[2] as AssessmentType,
+        stats: {
+          a: grade.filter((g) => g.score >= 90 && g.score <= 100).length,
+          b: grade.filter((g) => g.score >= 80 && g.score <= 89).length,
+          c: grade.filter((g) => g.score >= 70 && g.score <= 79).length,
+          d: grade.filter((g) => g.score >= 60 && g.score <= 69).length,
+          e: grade.filter((g) => g.score >= 0 && g.score <= 59).length,
+        },
+      }))
+      .sort((a, b) => b.date.getTime() - a.date.getTime());
 
     return NextResponse.json({ data: result, message: "Success get grades" }, { status: 200 });
   } catch (error) {
@@ -72,8 +74,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Class not found" }, { status: 404 });
     }
 
-    console.log(payload);
-
     for (const item of payload.data) {
       await prisma.grade.create({
         data: {
@@ -85,17 +85,6 @@ export async function POST(request: NextRequest) {
         },
       });
     }
-
-    // await prisma.grade.createMany({
-    //   data: payload.data.map((item) => ({
-    //     studentId: item.studentId,
-    //     classId: existClass.id,
-    //     date: new Date(payload.date),
-    //     assessmentType: payload.type,
-    //     score: item.grade,
-    //   })),
-    //   skipDuplicates: true,
-    // });
 
     return NextResponse.json({ message: "Success create grade" }, { status: 200 });
   } catch (error) {

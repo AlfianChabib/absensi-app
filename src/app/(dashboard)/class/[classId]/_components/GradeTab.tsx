@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { GradeService } from "@/services/grade.service";
 import { AssessmentType } from "@/utils/constants";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { format } from "date-fns";
+import { format, getUnixTime } from "date-fns";
 import { id } from "date-fns/locale";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -22,7 +22,8 @@ export default function GradeTab() {
     <div className="relative">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {data.map((item, index) => (
-          <div
+          <Link
+            href={`/grade/s/${item.classId}/${getUnixTime(item.date)}/${item.assessmentType}`}
             key={index}
             className="border rounded-sm p-2 w-full bg-secondary/50 shadow-xs border-primary/20 space-y-1"
           >
@@ -41,7 +42,7 @@ export default function GradeTab() {
                 <p>E: {item.stats.e}</p>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
       <Link

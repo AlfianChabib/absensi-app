@@ -1,6 +1,6 @@
 import { GradeResult } from "@/app/api/grades/route";
-import { CreateGradeSchema } from "@/validation/grade.validation";
-import { AssessmentType, Student } from "@prisma/client";
+import { CreateGradeSchema, UpdateGradeSchema } from "@/validation/grade.validation";
+import { AssessmentType, Class, Grade, Student } from "@prisma/client";
 
 export class GradeService {
   static async getAll({ classId }: { classId?: string }) {
@@ -28,6 +28,30 @@ export class GradeService {
   static async createGrade(payload: CreateGradeSchema) {
     const response = await fetch(`/api/grades`, {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await response.json();
+    return data;
+  }
+
+  static async getByClassIdDateType(payload: { classId: string; date: number; type: AssessmentType }) {
+    const response = await fetch(`/api/grades/${payload.classId}/${payload.date}/${payload.type}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    return data.data as { grades: (Grade & { student: { name: string } })[]; class: Class };
+  }
+
+  static async updateGrade(payload: UpdateGradeSchema) {
+    const response = await fetch(`/api/grades/${payload.classId}/${payload.date}/${payload.type}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
