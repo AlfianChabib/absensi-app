@@ -1,19 +1,30 @@
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 import { Suspense } from "react";
 import ClientPage from "./page.client";
+import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
+import { SearchParams } from "nuqs/server";
+import { exportAttendanceCache } from "@/lib/search-params";
+import { ExportService } from "@/services/export.service";
 
-export default async function page() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
+type PageProps = {
+  searchParams: Promise<SearchParams>;
+};
+
+export default async function page({ searchParams }: PageProps) {
+  await exportAttendanceCache.parse(searchParams);
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["export-classes"],
+    queryFn: () => ExportService.getClasses(),
   });
 
   return (
     <div className="container">
-      <div>{session?.user.email}</div>
-      <Suspense fallback={<div suppressHydrationWarning={true}>Loading...</div>}>
-        <ClientPage />
-      </Suspense>
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <Suspense>
+          <ClientPage />
+        </Suspense>
+      </HydrationBoundary>
     </div>
   );
 }
