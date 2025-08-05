@@ -12,13 +12,12 @@ import { CalendarIcon } from "lucide-react";
 
 type DateRangePickerProps = {
   disabled?: boolean;
-  limit: {
-    from: Date;
-    to: Date;
-  };
+  limit: { from: Date; to: Date };
+  date: DateRange;
+  setDate: (date: DateRange) => void;
 };
 
-export default function CustomDatePicker({ disabled, limit }: DateRangePickerProps) {
+export default function CustomDatePicker({ disabled, limit, date, setDate }: DateRangePickerProps) {
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const today = new Date();
@@ -51,7 +50,6 @@ export default function CustomDatePicker({ disabled, limit }: DateRangePickerPro
     to: endOfYear(subYears(today, 1)),
   };
   const [month, setMonth] = useState(today);
-  const [date, setDate] = useState<DateRange | undefined>(limit);
 
   return (
     <div>

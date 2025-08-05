@@ -4,7 +4,7 @@ export const NAVIGATION_LINKS = [
   { href: "/class", label: "Kelas", icon: School },
   { href: "/attendance", label: "Absen", icon: Logs },
   { href: "/grade", label: "Nilai", icon: FileText },
-  { href: "/import", label: "Import", icon: FolderUp },
+  { href: "/export", label: "Export", icon: FolderUp },
 ];
 
 export const TABS = [
@@ -14,7 +14,7 @@ export const TABS = [
   { type: "separator" as const },
   { title: "Nilai", icon: FileText, href: "/grade" },
   { type: "separator" as const },
-  { title: "Import", icon: FolderUp, href: "/import" },
+  { title: "Export", icon: FolderUp, href: "/export" },
 ];
 
 export const ATTENDANCE_STATUS = [

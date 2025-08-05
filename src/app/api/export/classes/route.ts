@@ -45,34 +45,6 @@ export async function GET(request: NextRequest) {
       }),
     ]);
 
-    // const firstAttendances = await prisma.attendance.findMany({
-    //   where: { classId: { in: classes.map((classItem) => classItem.id) } },
-    //   distinct: ["classId"],
-    //   orderBy: [{ classId: "asc" }, { date: "asc" }],
-    //   select: { date: true, classId: true },
-    // });
-
-    // const lastAttendances = await prisma.attendance.findMany({
-    //   where: { classId: { in: classes.map((classItem) => classItem.id) } },
-    //   distinct: ["classId"],
-    //   orderBy: [{ classId: "asc" }, { date: "desc" }],
-    //   select: { date: true, classId: true },
-    // });
-
-    // const lastGrades = await prisma.grade.findMany({
-    //   where: { classId: { in: classes.map((classItem) => classItem.id) } },
-    //   distinct: ["classId"],
-    //   orderBy: [{ classId: "asc" }, { date: "desc" }],
-    //   select: { date: true, classId: true },
-    // });
-
-    // const finalGrades = await prisma.grade.findMany({
-    //   where: { classId: { in: classes.map((classItem) => classItem.id) } },
-    //   distinct: ["classId"],
-    //   orderBy: [{ classId: "asc" }, { date: "asc" }],
-    //   select: { date: true, classId: true },
-    // });
-
     const firstAttendanceMap = new Map(firstAttendances.map((att) => [att.classId, att]));
     const lastAttendanceMap = new Map(lastAttendances.map((att) => [att.classId, att]));
     const lastGradeMap = new Map(lastGrades.map((att) => [att.classId, att]));
