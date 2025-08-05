@@ -49,6 +49,7 @@ model Attendance {
   student   Student          @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
   @@unique([studentId, date])
+  @@index([classId, date])
   @@map("attendances")
 }
 
@@ -65,6 +66,7 @@ model Grade {
   classId        String
 
   @@unique([studentId, date, assessmentType])
+  @@index([classId, date])
   @@map("grades")
 }
 
