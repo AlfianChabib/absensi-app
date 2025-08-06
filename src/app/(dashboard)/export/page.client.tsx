@@ -1,7 +1,7 @@
 "use client";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
 import { exportAttendanceParsers } from "@/lib/search-params";
 import CustomDatePicker from "./_components/CustomDatePicker";
@@ -10,10 +10,9 @@ import { useState } from "react";
 import { EXPORT_TYPES, ExportType } from "@/types/export";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import { FolderUp } from "lucide-react";
-import { toast } from "sonner";
+
 import { DateRange } from "react-day-picker";
+import DownloadButton from "./_components/DownloadButton";
 
 export default function ClientPage() {
   const now = new Date();
@@ -21,15 +20,15 @@ export default function ClientPage() {
   const [limit, setLimit] = useState<{ from: Date; to: Date }>({ from: now, to: now });
   const [date, setDate] = useState<DateRange>(limit);
 
-  const { mutate, isPending } = useMutation({
-    mutationKey: ["export-attendances", classId, type, date],
-    mutationFn: () =>
-      ExportService.exportAttendances(classId, type as ExportType, date?.from as Date, date?.to as Date),
-    onSuccess: (data) => {
-      toast.success("Berhasil mengekspor data");
-      console.log(data);
-    },
-  });
+  // const { mutate, isPending } = useMutation({
+  //   mutationKey: ["export-attendances", classId, type, date],
+  //   mutationFn: () =>
+  //     ExportService.exportAttendances(classId, type as ExportType, date?.from as Date, date?.to as Date),
+  //   onSuccess: (data) => {
+  //     toast.success("Berhasil mengekspor data");
+  //     console.log(data);
+  //   },
+  // });
 
   const { data: classes } = useSuspenseQuery({
     queryKey: ["export-classes"],
@@ -98,10 +97,13 @@ export default function ClientPage() {
           ))}
         </RadioGroup>
       </div>
-      <Button className="w-full" onClick={() => mutate()} disabled={!classId || !type || !date || isPending}>
-        <FolderUp />
-        <span>Export</span>
-      </Button>
+      <DownloadButton
+        classId={classId}
+        namaKelas={classes.find((cls) => cls.id === classId)?.name as string}
+        exportType={type}
+        startDate={date?.from}
+        endDate={date?.to}
+      />
     </div>
   );
 }

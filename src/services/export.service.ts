@@ -22,8 +22,8 @@ export class ExportService {
   }
 
   static async exportAttendances(classId: string, type: ExportType, startDate: Date, endDate: Date) {
-    const response = await fetch(`/api/export/${type}`, {
-      method: "POST",
+    const response = await fetch(`/api/export/${type}/downlaod`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
