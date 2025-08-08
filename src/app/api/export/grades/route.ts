@@ -6,12 +6,14 @@ export async function POST(request: NextRequest) {
   const payload: ExportAttendances = await request.json();
 
   try {
-    const data = await prisma.grade.findMany({
-      where: {
-        classId: payload.classId,
-        date: {
-          gte: payload.startDate,
-          lte: payload.endDate,
+    const data = await prisma.student.findMany({
+      where: { classId: payload.classId },
+      include: {
+        grade: {
+          where: {
+            date: { gte: payload.startDate, lte: payload.endDate },
+          },
+          orderBy: { date: "asc" },
         },
       },
     });

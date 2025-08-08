@@ -1,4 +1,5 @@
 import { Attendance, Class, Student } from "@prisma/client";
+import { getUnixTime } from "date-fns";
 import ExcelJS, { Alignment } from "exceljs";
 
 type StudentWithAttendance = Student & { attendance: Attendance[] };
@@ -16,9 +17,20 @@ export async function exportAttendance2({ students, classData }: ExportAttendanc
 
   if (!worksheet) return;
 
-  const attendanceDates = Array.from(
-    new Set(students.flatMap((student) => student.attendance.map((attendance) => attendance.date)))
-  );
+  const setDates = new Set<number>();
+
+  students.forEach((student) => {
+    student.attendance.forEach((attendance) => {
+      setDates.add(getUnixTime(attendance.date));
+    });
+  });
+
+  const attendanceDates = Array.from(setDates)
+    .map((date) => new Date(date * 1000))
+    .sort((a, b) => a.getTime() - b.getTime());
+
+  console.log(attendanceDates);
+
   const dateColumnsCount = attendanceDates.length;
   const totalColumns = 4 + dateColumnsCount + 4;
 
@@ -33,7 +45,7 @@ export async function exportAttendance2({ students, classData }: ExportAttendanc
 
   worksheet.getCell("A7").value = "NO";
   worksheet.getCell("B7").value = "NIS";
-  worksheet.getCell("C7").value = "NAMA SISWA";
+  worksheet.getCell("C7").value = "NAMA";
   worksheet.getCell("D7").value = "L/P";
   worksheet.mergeCells(7, 5, 7, 4 + dateColumnsCount);
   worksheet.getCell(7, 5).value = "TANGGAL";
@@ -89,8 +101,8 @@ export async function exportAttendance2({ students, classData }: ExportAttendanc
     const rowData = [index + 1, student.nis, student.name, student.gender === "MALE" ? "L" : "P"];
     const studentSummary = { HADIR: 0, ALFA: 0, IZIN: 0, SAKIT: 0 };
 
-    student.attendance.forEach((attendance) => {
-      switch (attendance.status[0]) {
+    const calcSummary = (status: string) => {
+      switch (status[0]) {
         case "S":
           studentSummary.SAKIT++;
           break;
@@ -104,8 +116,23 @@ export async function exportAttendance2({ students, classData }: ExportAttendanc
           studentSummary.HADIR++;
           break;
       }
-      rowData.push(attendance.status[0].toUpperCase());
-    });
+    };
+
+    if (student.attendance.length === 0) {
+      rowData.push(...Array(attendanceDates.length).fill("-"));
+    } else if (student.attendance.length === attendanceDates.length) {
+      student.attendance.forEach((attendance) => {
+        rowData.push(attendance ? attendance.status[0].toUpperCase() : "-");
+        calcSummary(attendance?.status);
+      });
+    } else {
+      attendanceDates.forEach((date) => {
+        const attendance = student.attendance.find((attendance) => attendance.date.getTime() === date.getTime());
+        rowData.push(attendance ? attendance.status[0].toUpperCase() : "-");
+        calcSummary(attendance?.status || "-");
+      });
+    }
+
     rowData.push(studentSummary.HADIR, studentSummary.ALFA, studentSummary.IZIN, studentSummary.SAKIT);
 
     const row = worksheet.addRow(rowData);

@@ -14,11 +14,13 @@ export async function POST(request: NextRequest) {
     }
 
     const students = await prisma.student.findMany({
-      where: {
-        classId: classData.id,
-        attendance: { some: { date: { gte: payload.startDate, lte: payload.endDate } } },
+      where: { classId: classData.id },
+      include: {
+        attendance: {
+          where: { date: { gte: payload.startDate, lte: payload.endDate } },
+          orderBy: { date: "asc" },
+        },
       },
-      include: { attendance: true },
     });
 
     const buffer = await exportAttendance2({ students, classData });

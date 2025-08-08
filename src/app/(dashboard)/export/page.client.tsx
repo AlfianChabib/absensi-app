@@ -20,16 +20,6 @@ export default function ClientPage() {
   const [limit, setLimit] = useState<{ from: Date; to: Date }>({ from: now, to: now });
   const [date, setDate] = useState<DateRange>(limit);
 
-  // const { mutate, isPending } = useMutation({
-  //   mutationKey: ["export-attendances", classId, type, date],
-  //   mutationFn: () =>
-  //     ExportService.exportAttendances(classId, type as ExportType, date?.from as Date, date?.to as Date),
-  //   onSuccess: (data) => {
-  //     toast.success("Berhasil mengekspor data");
-  //     console.log(data);
-  //   },
-  // });
-
   const { data: classes } = useSuspenseQuery({
     queryKey: ["export-classes"],
     queryFn: () => ExportService.getClasses(),
