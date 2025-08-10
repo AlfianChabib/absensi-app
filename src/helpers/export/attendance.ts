@@ -1,8 +1,7 @@
-import { Attendance, Class, Student } from "@prisma/client";
+import { StudentWithAttendance } from "@/types/export";
+import { Class } from "@prisma/client";
 import { getUnixTime } from "date-fns";
 import ExcelJS, { Alignment } from "exceljs";
-
-type StudentWithAttendance = Student & { attendance: Attendance[] };
 
 type ExportAttendanceProps = {
   students: StudentWithAttendance[];

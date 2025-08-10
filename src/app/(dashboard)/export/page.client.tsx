@@ -1,28 +1,36 @@
 "use client";
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { useQueryStates } from "nuqs";
 import { exportAttendanceParsers } from "@/lib/search-params";
 import CustomDatePicker from "./_components/CustomDatePicker";
 import { ExportService } from "@/services/export.service";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EXPORT_TYPES, ExportType } from "@/types/export";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
 import { DateRange } from "react-day-picker";
 import DownloadButton from "./_components/DownloadButton";
+import CalculatedAttendancesResult from "./_components/CalculatedAttendancesResult";
 
 export default function ClientPage() {
   const now = new Date();
   const [{ classId, type }, setSearchParams] = useQueryStates(exportAttendanceParsers);
   const [limit, setLimit] = useState<{ from: Date; to: Date }>({ from: now, to: now });
   const [date, setDate] = useState<DateRange>(limit);
+  const ref = useRef(false);
 
   const { data: classes } = useSuspenseQuery({
     queryKey: ["export-classes"],
     queryFn: () => ExportService.getClasses(),
+  });
+
+  const { data: calculated } = useQuery({
+    queryKey: ["export-calculated", classId, type, limit.from, limit.to],
+    queryFn: () => ExportService.getCalculated(classId, type, limit.from, limit.to),
+    enabled: !!classId && !!type,
   });
 
   const updateLimit = (classItem: (typeof classes)[0] | undefined, type: ExportType) => {
@@ -39,6 +47,19 @@ export default function ClientPage() {
       setDate({ from: firstDate, to: lastDate });
     }
   };
+
+  useEffect(() => {
+    if (ref.current) return;
+    ref.current = true;
+
+    if (classId) {
+      const classItem = classes.find((cls) => cls.id === classId);
+      if (classItem) {
+        setLimit({ from: classItem.firstAttendance.date as Date, to: classItem.lastAttendance.date as Date });
+        setDate({ from: classItem.firstAttendance.date as Date, to: classItem.lastAttendance.date as Date });
+      }
+    }
+  }, [classId, classes]);
 
   return (
     <div className="py-2 space-y-2">
@@ -94,6 +115,17 @@ export default function ClientPage() {
         startDate={date?.from}
         endDate={date?.to}
       />
+      {calculated && calculated.length > 0 ? (
+        type === "attendances" ? (
+          <CalculatedAttendancesResult calculatedAttendances={calculated} />
+        ) : (
+          <div>Grades</div>
+        )
+      ) : (
+        <div className="flex border-2 border-dashed border-primary p-2 rounded-sm items-center justify-center">
+          <p>Tidak ada data yang ditemukan</p>
+        </div>
+      )}
     </div>
   );
 }
