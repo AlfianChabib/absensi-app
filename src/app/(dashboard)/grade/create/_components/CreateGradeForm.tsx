@@ -71,7 +71,6 @@ export default function CreateGradeForm() {
   });
 
   const handleSubmit = (payload: CreateGradeSchema) => {
-    console.log(payload);
     mutate(payload);
   };
 

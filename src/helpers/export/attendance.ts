@@ -28,8 +28,6 @@ export async function exportAttendance2({ students, classData }: ExportAttendanc
     .map((date) => new Date(date * 1000))
     .sort((a, b) => a.getTime() - b.getTime());
 
-  console.log(attendanceDates);
-
   const dateColumnsCount = attendanceDates.length;
   const totalColumns = 4 + dateColumnsCount + 4;
 

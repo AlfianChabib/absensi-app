@@ -8,7 +8,7 @@ export default function CalculatedAttendancesResult({
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
       {calculatedAttendances.map((attendance) => (
-        <div key={attendance.studentId} className="border-2 border-dashed border-primary p-2">
+        <div key={attendance.studentId} className="border-2 border-dashed rounded-sm border-primary p-2">
           <div className="flex justify-between">
             <div className="text-sm font-medium">{attendance.name}</div>
             <div className="text-sm font-medium">

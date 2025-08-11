@@ -110,7 +110,6 @@ export async function POST(request: NextRequest) {
 //     );
 //   } catch (error) {
 //     if (error instanceof Error) {
-//       console.log(error);
 //       return NextResponse.json({ error: error.message }, { status: 500 });
 //     }
 //   }

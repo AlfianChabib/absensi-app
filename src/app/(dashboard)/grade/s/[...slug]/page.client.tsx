@@ -66,7 +66,6 @@ export default function ClientPage({ params }: { params: Slug }) {
 
   const handleSubmit = (payload: UpdateGradeSchema) => {
     mutate(payload);
-    console.log(payload);
   };
 
   return (

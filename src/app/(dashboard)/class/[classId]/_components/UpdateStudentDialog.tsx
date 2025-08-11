@@ -51,7 +51,6 @@ export default function UpdateStudentDialog({ student, open, onOpenChange }: Upd
 
   const handeSubmit = (payload: UpdateStudentSchema) => {
     mutate(payload);
-    console.log(payload);
   };
 
   return (

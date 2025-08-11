@@ -4,10 +4,10 @@ export default function CalculatedGradesResult({ calculatedGrades }: { calculate
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
       {calculatedGrades.map((grade) => (
-        <div key={grade.studentId} className="border-2 border-dashed border-primary p-2">
+        <div key={grade.studentId} className="border-2 border-dashed border-primary rounded-sm p-2">
           <div className="flex justify-between">
-            <div className="text-sm font-medium">{grade.name}</div>
-            <div className="text-sm font-medium">{grade.avg}</div>
+            <p className="text-sm font-medium">{grade.name}</p>
+            <p className="text-sm font-medium">Rata-rata : {grade.avg}</p>
           </div>
         </div>
       ))}

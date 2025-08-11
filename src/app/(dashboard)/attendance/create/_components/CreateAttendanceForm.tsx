@@ -71,7 +71,6 @@ export default function CreateAttendanceForm() {
 
   const handleSubit = (payload: CreateAttendanceSchema) => {
     mutate(payload);
-    console.log(payload);
   };
 
   if (data && data.existAttendance > 0 && data.students.length > 0) {
