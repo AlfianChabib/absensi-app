@@ -1,9 +1,14 @@
-import { CalculatedAttendance, ExportType } from "@/types/export";
+import { CalculatedAttendance, CalculatedGrade, EXPORT_TYPES, ExportType } from "@/types/export";
 import { Attendance, Class, Grade } from "@prisma/client";
 import { getUnixTime } from "date-fns";
 
 type AttendanceDate = Pick<Attendance, "date" | "classId">;
 type GradeDate = Pick<Grade, "date" | "classId">;
+
+type ExportResultMap = {
+  [EXPORT_TYPES.ATTENDANCES]: CalculatedAttendance[];
+  [EXPORT_TYPES.GRADES]: CalculatedGrade[];
+};
 
 export class ExportService {
   static async getClasses() {
@@ -40,7 +45,12 @@ export class ExportService {
     return data.data as string;
   }
 
-  static async getCalculated(classId: string, type: ExportType, startDate: Date, endDate: Date) {
+  static async getCalculated<T extends ExportType>(
+    classId: string,
+    type: T,
+    startDate: Date,
+    endDate: Date
+  ): Promise<ExportResultMap[T]> {
     const params = new URLSearchParams({
       classId,
       startDate: getUnixTime(startDate).toString(),
@@ -55,6 +65,6 @@ export class ExportService {
     });
 
     const data = await response.json();
-    return data.data as CalculatedAttendance[];
+    return data.data as ExportResultMap[T];
   }
 }

@@ -16,16 +16,19 @@ export async function exportGrade({ students, classData }: ExportGradeProps) {
 
   if (!worksheet) return;
 
-  const setDates = new Set<{ date: number; type: AssessmentType }>();
+  const setDates = new Set<string>();
 
   students.forEach((student) => {
     student.grade.forEach((grade) => {
-      setDates.add({ date: getUnixTime(grade.date), type: grade.assessmentType });
+      setDates.add(`${getUnixTime(grade.date)}-${grade.assessmentType}`);
     });
   });
 
   const gradeDateAndType: { date: Date; type: AssessmentType }[] = Array.from(setDates)
-    .map((data) => ({ date: new Date(data.date * 1000), type: data.type }))
+    .map((data) => ({
+      date: new Date(parseInt(data.split("-")[0]) * 1000),
+      type: data.split("-")[1] as AssessmentType,
+    }))
     .sort((a, b) => a.date.getTime() - b.date.getTime());
 
   const dateColumnsCount = gradeDateAndType.length;
@@ -46,7 +49,6 @@ export async function exportGrade({ students, classData }: ExportGradeProps) {
   worksheet.getCell("D7").value = "L/P";
   worksheet.mergeCells(7, 5, 7, 4 + dateColumnsCount);
   worksheet.getCell(7, 5).value = "TANGGAL";
-  // worksheet.mergeCells(7, 5 + dateColumnsCount, 7, 4 + dateColumnsCount + 1);
   worksheet.getCell(7, 5 + dateColumnsCount).value = "AVG";
 
   const subHeaderValues = ["", "", "", ""];
@@ -54,7 +56,7 @@ export async function exportGrade({ students, classData }: ExportGradeProps) {
     ...gradeDateAndType.map(
       (data) =>
         `${Intl.DateTimeFormat("id-ID", { year: "2-digit", month: "2-digit", day: "2-digit" }).format(data.date)} \n ${
-          data.type
+          data.type === "ULANGAN_HARIAN" ? "ULANGAN" : data.type
         }`
     )
   );
@@ -64,7 +66,7 @@ export async function exportGrade({ students, classData }: ExportGradeProps) {
     worksheet.getRow(i).font = { size: 11, name: "Roboto", bold: true };
     if (i === 8) {
       worksheet.getRow(i).alignment = { vertical: "middle", horizontal: "center", textRotation: -90, wrapText: true };
-      worksheet.getRow(i).height = 110;
+      worksheet.getRow(i).height = 80;
     } else {
       worksheet.getRow(i).alignment = { vertical: "middle", horizontal: "center", wrapText: true };
     }
@@ -83,8 +85,6 @@ export async function exportGrade({ students, classData }: ExportGradeProps) {
     }
   }
 
-  console.log(String.fromCharCode(totalColumns + 64));
-
   for (let i = 5; i <= totalColumns; i++) {
     worksheet.getColumn(i).width = 8;
   }
@@ -93,8 +93,7 @@ export async function exportGrade({ students, classData }: ExportGradeProps) {
   worksheet.mergeCells("B7:B8");
   worksheet.mergeCells("C7:C8");
   worksheet.mergeCells("D7:D8");
-  // worksheet.mergeCells(`${String.fromCharCode(totalColumns + 64)}7:${String.fromCharCode(totalColumns + 64)}8`);
-  console.log(`${String.fromCharCode(totalColumns + 64)}7:${String.fromCharCode(totalColumns + 64)}8`);
+  worksheet.mergeCells(`${String.fromCharCode(totalColumns + 64)}7:${String.fromCharCode(totalColumns + 64)}8`);
 
   const startLine = 9;
   students.forEach((student, index) => {
@@ -136,7 +135,6 @@ export async function exportGrade({ students, classData }: ExportGradeProps) {
     }
     worksheet.getCell(`C${startLine + index}`).alignment = leftAlign;
   });
-  worksheet.mergeCells(`${String.fromCharCode(totalColumns + 64)}7:${String.fromCharCode(totalColumns + 64)}8`);
 
   return await workbook.xlsx.writeBuffer();
 }

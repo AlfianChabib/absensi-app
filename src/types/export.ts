@@ -1,4 +1,4 @@
-import { Attendance, Grade, Student } from "@prisma/client";
+import { Attendance, Gender, Grade, Student } from "@prisma/client";
 
 export const EXPORT_TIME_TYPES = {
   ALL: "all",
@@ -30,4 +30,12 @@ export type CalculatedAttendance = {
     IZIN: number;
     SAKIT: number;
   };
+};
+
+export type CalculatedGrade = {
+  studentId: string;
+  name: string;
+  gender: Gender;
+  nis: string;
+  avg: number;
 };

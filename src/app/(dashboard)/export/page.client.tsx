@@ -7,13 +7,14 @@ import { exportAttendanceParsers } from "@/lib/search-params";
 import CustomDatePicker from "./_components/CustomDatePicker";
 import { ExportService } from "@/services/export.service";
 import { useEffect, useRef, useState } from "react";
-import { EXPORT_TYPES, ExportType } from "@/types/export";
+import { CalculatedAttendance, CalculatedGrade, EXPORT_TYPES, ExportType } from "@/types/export";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
 import { DateRange } from "react-day-picker";
 import DownloadButton from "./_components/DownloadButton";
 import CalculatedAttendancesResult from "./_components/CalculatedAttendancesResult";
+import CalculatedGradesResult from "./_components/CalculatedGradesResult";
 
 export default function ClientPage() {
   const now = new Date();
@@ -117,9 +118,9 @@ export default function ClientPage() {
       />
       {calculated && calculated.length > 0 ? (
         type === "attendances" ? (
-          <CalculatedAttendancesResult calculatedAttendances={calculated} />
+          <CalculatedAttendancesResult calculatedAttendances={calculated as CalculatedAttendance[]} />
         ) : (
-          <div>Grades</div>
+          <CalculatedGradesResult calculatedGrades={calculated as CalculatedGrade[]} />
         )
       ) : (
         <div className="flex border-2 border-dashed border-primary p-2 rounded-sm items-center justify-center">
