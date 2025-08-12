@@ -19,9 +19,9 @@ export default function DateRangePicker() {
   const handleSelect: OnSelectHandler<undefined | DateRange> = (selected) => {
     if (selected) {
       if (selected.from === selected.to) {
-        setSearchParams({ startDate: selected.from, endDate: selected.from, type: "current" });
+        setSearchParams({ startDate: selected.from, endDate: selected.from });
       } else {
-        setSearchParams({ startDate: selected.from, endDate: selected.to, type: "range" });
+        setSearchParams({ startDate: selected.from, endDate: selected.to });
       }
     }
   };

@@ -3,6 +3,8 @@ import ClientPage from "./page.client";
 import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query";
 import { GradeService } from "@/services/grade.service";
 
+export const dynamic = "force-dynamic";
+
 export default async function page() {
   const queryClient = new QueryClient();
 

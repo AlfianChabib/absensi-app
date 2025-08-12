@@ -5,6 +5,9 @@ import { Suspense } from "react";
 import UserMenuFallback from "../navbar-components/avatar-fallback";
 import NavigatorMenu from "../navbar-components/navigator-menu";
 import Image from "next/image";
+import { Gift } from "lucide-react";
+import { buttonVariants } from "../ui/button";
+import Link from "next/link";
 
 export default function Navbar() {
   return (
@@ -18,10 +21,14 @@ export default function Navbar() {
         </div>
         <NavigatorMenu />
         <div className="flex flex-1 items-center justify-end gap-4">
-          {/* <Button size="sm" className="text-sm max-sm:aspect-square max-sm:p-0">
-            <PlusIcon className="opacity-60 sm:-ms-1" size={16} aria-hidden="true" />
-            <span className="max-sm:sr-only">Post</span>
-          </Button> */}
+          <Link
+            href={"https://saweria.co/AlfianChabib"}
+            target="_blank"
+            className={buttonVariants({ size: "sm", className: "text-sm max-sm:aspect-square max-sm:p-0" })}
+          >
+            <Gift className="opacity-60 sm:-ms-1" size={16} aria-hidden="true" />
+            <span className="max-sm:sr-only leading-4">Support Developer</span>
+          </Link>
           <Suspense fallback={<UserMenuFallback />}>
             <UserMenu />
           </Suspense>

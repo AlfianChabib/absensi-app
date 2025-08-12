@@ -7,8 +7,8 @@ const dashboardPages = ["/class", "/grade", "/attendance", "/export", "/import"]
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const { data: session } = await betterFetch<Session>("/api/auth/get-session", {
-    // baseURL: request.nextUrl.origin,
-    baseURL: "http://192.168.1.84:3000",
+    baseURL: process.env.NODE_ENV === "development" ? "http://localhost:3000" : "http://192.168.1.84:3000",
+    // baseURL: "http://192.168.1.84:3000",
     headers: {
       cookie: request.headers.get("cookie") || "",
     },

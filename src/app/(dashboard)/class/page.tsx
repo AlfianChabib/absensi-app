@@ -3,6 +3,8 @@ import { dehydrate, HydrationBoundary, QueryClient } from "@tanstack/react-query
 import CLientPage from "./page.client";
 import CreateClassDialog from "./_components/CreateClassDialog";
 
+export const dynamic = "force-dynamic";
+
 export default async function page() {
   const queryClient = new QueryClient();
   await queryClient.prefetchQuery({
