@@ -1,10 +1,11 @@
-import { FileText, FolderUp, Logs, School } from "lucide-react";
+import { FileInput, FileText, FolderUp, Logs, School } from "lucide-react";
 
 export const NAVIGATION_LINKS = [
   { href: "/class", label: "Kelas", icon: School },
   { href: "/attendance", label: "Absen", icon: Logs },
   { href: "/grade", label: "Nilai", icon: FileText },
   { href: "/export", label: "Export", icon: FolderUp },
+  { href: "/import", label: "Import", icon: FileInput },
 ];
 
 export const TABS = [
@@ -15,6 +16,8 @@ export const TABS = [
   { title: "Nilai", icon: FileText, href: "/grade" },
   { type: "separator" as const },
   { title: "Export", icon: FolderUp, href: "/export" },
+  { type: "separator" as const },
+  { title: "Import", icon: FileInput, href: "/import" },
 ];
 
 export const ATTENDANCE_STATUS = [

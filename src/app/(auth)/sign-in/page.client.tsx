@@ -84,7 +84,7 @@ export default function ClientPage({ className, ...props }: React.ComponentProps
                 )}
               />
               <Button disabled={isPending} type="submit">
-                Register
+                Sign in
               </Button>
             </form>
           </Form>
@@ -92,7 +92,7 @@ export default function ClientPage({ className, ...props }: React.ComponentProps
         <div className="text-center text-sm">
           Don&apos;t have an account?{" "}
           <Link href="/sign-up" className="underline underline-offset-4">
-            Sign In
+            Register
           </Link>
         </div>
       </Card>

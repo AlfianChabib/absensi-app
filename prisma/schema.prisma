@@ -34,6 +34,7 @@ model Student {
   grade      Grade[]
   class      Class        @relation(fields: [classId], references: [id])
 
+  @@unique([name, nis])
   @@map("students")
 }
 
