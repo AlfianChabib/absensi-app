@@ -35,7 +35,14 @@ export default function ClientPage() {
   });
 
   const updateLimit = (classItem: (typeof classes)[0] | undefined, type: ExportType) => {
-    if (!classItem) return;
+    if (
+      !classItem ||
+      !classItem.firstAttendance ||
+      !classItem.lastAttendance ||
+      !classItem.firstGrade ||
+      !classItem.lastGrade
+    )
+      return;
     if (type === "attendances") {
       const firstDate = classItem.firstAttendance.date as Date;
       const lastDate = classItem.lastAttendance.date as Date;
@@ -103,7 +110,17 @@ export default function ClientPage() {
               key={item}
               className="border-input has-data-[state=checked]:border-primary has-data-[state=checked]:text-primary has-focus-visible:border-ring has-focus-visible:ring-ring/50 relative flex cursor-pointer flex-col items-center gap-3 rounded-md border px-2 py-3 text-center shadow-xs transition-[color,box-shadow] outline-none has-focus-visible:ring-[3px] has-data-disabled:cursor-not-allowed has-data-disabled:opacity-50"
             >
-              <RadioGroupItem id={item} value={item} className="sr-only after:absolute after:inset-0" />
+              <RadioGroupItem
+                id={item}
+                value={item}
+                className="sr-only after:absolute after:inset-0"
+                disabled={
+                  !classId ||
+                  (item === "attendances"
+                    ? !classes.find((cls) => cls.id === classId)?.firstAttendance
+                    : !classes.find((cls) => cls.id === classId)?.firstGrade)
+                }
+              />
               <p className="text-sm leading-none font-medium">{item === "attendances" ? "Absen" : "Nilai"}</p>
             </Label>
           ))}
